@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   TopBar,
@@ -217,12 +217,33 @@ const Home = () => {
     dispatch(UserLogin(newUserData));
   };
 
+  // Memoize the data fetching functions
+  const memoizedFetchFriendRequests = useCallback(fetchFriendRequests, [
+    user?.token,
+  ]);
+  const memoizedFetchSuggestedFriends = useCallback(fetchSuggestedFriends, [
+    user?.token,
+  ]);
+  const memoizedFetchingPost = useCallback(fetchingPost, [
+    dispatch,
+    user?.token,
+  ]);
+  const memoizedGetUser = useCallback(getUser, [dispatch, user?.token]);
+
   useEffect(() => {
-    setLoading(true);
-    getUser();
-    fetchingPost();
-    fetchFriendRequests();
-    fetchSuggestedFriends();
+    const fetchData = async () => {
+      setLoading(true);
+      // Call the memoized functions
+      await memoizedGetUser();
+      await memoizedFetchFriendRequests();
+      await memoizedFetchSuggestedFriends();
+      await memoizedFetchingPost();
+      setLoading(false);
+    };
+
+    fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

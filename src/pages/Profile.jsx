@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -36,21 +36,21 @@ const Profile = () => {
     await getPosts();
   };
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     const response = await getUserInfo(user?.token, id);
     setUserInfo(response);
-  };
+  }, [user?.token, id]);
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     await fetchPosts(user?.token, dispatch, uri);
     setLoading(false);
-  };
+  }, [user?.token, dispatch, uri]);
 
   useEffect(() => {
     setLoading(true);
     getUser();
     getPosts();
-  }, [id]);
+  }, [getPosts, getUser, id]);
 
   return (
     <>
