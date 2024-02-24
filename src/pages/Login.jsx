@@ -59,8 +59,9 @@ const Login = () => {
 
   return (
     <div
-      className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-6"
-      style={{ backgroundImage: `url(${BgImage2})`, backgroundSize: "cover" }}>
+      className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-2"
+      style={{ backgroundImage: `url(${BgImage2})`, backgroundSize: "cover" }}
+    >
       <div className="w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex bg-primary rounded-xl overflow-hidden shadow-xl">
         {/* LEFT SIDE */}
         <div className="w-full lg:w-1/2 h-full p-10 2xl:px-20 flex flex-col justify-center">
@@ -76,8 +77,9 @@ const Login = () => {
           <span className="text-sm mt-2 text-ascent-2">Welcome back</span>
 
           <form
-            className="py-8 flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmit)}>
+            className="py-5 flex flex-col gap-3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <TextInput
               name="email"
               placeholder="email@example.com"
@@ -106,14 +108,16 @@ const Login = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute top-12 right-3 transform -translate-y-3/2">
-                {showPassword ? "🙈" : "👁️"}
+                className="absolute top-12 right-3 transform -translate-y-3/2"
+              >
+                {showPassword ? "👁️" : "🙈"}
               </button>
             </div>
 
             <Link
               to="/reset-password"
-              className="text-sm text-right text-blue font-semibold">
+              className="text-sm text-right text-blue font-semibold"
+            >
               Forgot Password ?
             </Link>
             {errMsg && (
@@ -122,7 +126,8 @@ const Login = () => {
                   errMsg?.status === "failed"
                     ? "text-[#2ba150fe]"
                     : "text-[#f64949fe]"
-                } mt-0.5`}>
+                } mt-0.5`}
+              >
                 {errMsg}
               </span>
             )}
@@ -142,7 +147,8 @@ const Login = () => {
             Don't have an account?
             <Link
               to="/register"
-              className="text-[#065ad8] font-semibold ml-2 cursor-pointer">
+              className="text-[#065ad8] font-semibold ml-2 cursor-pointer"
+            >
               Create Account
             </Link>
           </p>

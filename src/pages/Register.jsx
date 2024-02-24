@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BsShare } from "react-icons/bs";
 import { AiOutlineInteraction } from "react-icons/ai";
@@ -8,6 +7,7 @@ import { ImConnection } from "react-icons/im";
 import { CustomButton, Loading, TextInput } from "../components";
 import { BgImage, BgImage2, homeLogo, socialUtopiaName } from "../assets";
 import { axiosClient } from "../utils/axiosClient";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [errMsg, setErrMsg] = useState("");
@@ -31,20 +31,23 @@ const Register = () => {
         data: data,
         method: "POST",
       });
+      toast.success(response.data.message, {
+        autoClose: 5000,
+      });
       if (response?.status === "failed") {
         setErrMsg(response.data.message);
       } else {
         setErrMsg("");
         setTimeout(() => {
           window.location.replace("/#/login");
-        }, 4000);
+        }, 5000);
       }
       setIsSubmitting(false);
     } catch (error) {
       const err = error.response.data;
-      console.log("Detailed error:", err);
       setIsSubmitting(false);
       setErrMsg(err?.message);
+      toast.error(err?.message);
     }
   };
 
@@ -54,25 +57,27 @@ const Register = () => {
 
   return (
     <div
-      className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-3"
-      style={{ backgroundImage: `url(${BgImage2})`, backgroundSize: "cover" }}>
-      <div className="w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl">
+      className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-2"
+      style={{ backgroundImage: `url(${BgImage2})`, backgroundSize: "cover" }}
+    >
+      <div className="w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-6 lg:py-0 flex flex-row-reverse bg-primary rounded-xl overflow-hidden shadow-xl">
         {/* LEFT */}
         <div className="w-full lg:w-1/2 h-full p-10 2xl:px-20 flex flex-col justify-center ">
           <div className="w-full flex  items-center mb-6">
-            <div className="p-2  rounded text-white flex">
+            <div className="p-1 mb-0  rounded text-white flex">
               <img src={socialUtopiaName} alt="Brand-Logo" className="w-14" />
               <img src={homeLogo} alt="" className="w-auto h-12 mt-2" />
             </div>
           </div>
 
-          <p className="text-ascent-1 text-base font-semibold">
+          <p className="text-ascent-1 text-base font-semibold p-0">
             Create your account
           </p>
 
           <form
-            className="py-8 flex flex-col gap-5"
-            onSubmit={handleSubmit(onSubmit)}>
+            className="py-5 flex flex-col gap-3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="w-full flex flex-col lg:flex-row gap-1 md:gap-2 rounded">
               <TextInput
                 name="firstName"
@@ -126,8 +131,9 @@ const Register = () => {
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute top-12 right-1 transform -translate-y-3/2">
-                  {showPassword ? "🙈" : "👁️"}
+                  className="absolute top-12 right-1 transform -translate-y-3/2"
+                >
+                  {showPassword ? "👁️" : "🙈"}
                 </button>
               </div>
               <TextInput
@@ -158,7 +164,8 @@ const Register = () => {
                   errMsg?.status === "failed"
                     ? " text-[#2ba150fe]"
                     : "text-[#f64949fe]"
-                } mt-0.5`}>
+                } mt-0.5`}
+              >
                 {errMsg}
               </span>
             )}
@@ -178,7 +185,8 @@ const Register = () => {
             Already has an account?{" "}
             <Link
               to="/login"
-              className="text-[#065ad8] font-semibold ml-2 cursor-pointer">
+              className="text-[#065ad8] font-semibold ml-2 cursor-pointer"
+            >
               Login
             </Link>
           </p>

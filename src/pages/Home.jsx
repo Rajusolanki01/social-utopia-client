@@ -71,7 +71,7 @@ const Home = () => {
     const storedRequests = localStorage.getItem("sentFriendRequests");
     return storedRequests ? JSON.parse(storedRequests) : [];
   });
-  
+
   const dispatch = useDispatch();
 
   const {
@@ -188,12 +188,15 @@ const Home = () => {
         setErrMsg(response?.data?.message);
       } else {
         setErrMsg(response?.data?.message);
-  
+
         // Update sentFriendRequests state
         setSentFriendRequests((prevRequests) => [...prevRequests, id]);
-  
+
         // Store in local storage
-        localStorage.setItem("sentFriendRequests", JSON.stringify([...sentFriendRequests, id]));
+        localStorage.setItem(
+          "sentFriendRequests",
+          JSON.stringify([...sentFriendRequests, id])
+        );
       }
     } catch (error) {
       console.log(error);
@@ -233,7 +236,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="w-full px-0 lg:px-10 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-hidden">
+      <div className="w-full px-0 lg:px-3 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-hidden">
         <TopBar />
 
         <div className="w-full flex gap-2 lg:gap-4 pt-5 pb-10 h-full">
@@ -246,7 +249,8 @@ const Home = () => {
           <div className="flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg">
             <form
               onSubmit={handleSubmit(handlePostSubmit)}
-              className="bg-primary px-4 rounded-lg">
+              className="bg-primary px-4 rounded-lg"
+            >
               <div className="w-full flex items-center gap-2 py-4 border-b border-[#66666645]">
                 <img
                   src={user?.profileUrl ?? NoProfile}
@@ -270,7 +274,8 @@ const Home = () => {
                     errMsg?.status === "failed"
                       ? "text-[#2ba150fe]"
                       : "text-[#f64949fe]"
-                  } mt-0.5`}>
+                  } mt-0.5`}
+                >
                   {errMsg}
                 </span>
               )}
@@ -283,7 +288,8 @@ const Home = () => {
               <div className="flex items-center justify-between py-4">
                 <label
                   htmlFor="imgUpload"
-                  className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer">
+                  className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer"
+                >
                   <input
                     type="file"
                     onChange={(e) => setFile(e.target.files[0])}
@@ -298,7 +304,8 @@ const Home = () => {
 
                 <label
                   className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer"
-                  htmlFor="videoUpload">
+                  htmlFor="videoUpload"
+                >
                   <input
                     type="file"
                     data-max-size="5120"
@@ -313,7 +320,8 @@ const Home = () => {
 
                 <label
                   className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer"
-                  htmlFor="vgifUpload">
+                  htmlFor="vgifUpload"
+                >
                   <input
                     type="file"
                     data-max-size="5120"
@@ -373,7 +381,8 @@ const Home = () => {
                   <div key={_id} className="flex items-center justify-between">
                     <Link
                       to={"/profile" + from._id}
-                      className="w-full flex gap-4 items-center cursor-pointer">
+                      className="w-full flex gap-4 items-center cursor-pointer"
+                    >
                       <img
                         src={from?.profileUrl ?? NoProfile}
                         alt={from?.firstName}
@@ -417,11 +426,13 @@ const Home = () => {
                 {suggestedFriends?.map((friend) => (
                   <div
                     className="flex items-center justify-between"
-                    key={friend._id}>
+                    key={friend._id}
+                  >
                     <Link
                       to={"/profile/" + friend?._id}
                       key={friend?._id}
-                      className="w-full flex gap-4 items-center cursor-pointer">
+                      className="w-full flex gap-4 items-center cursor-pointer"
+                    >
                       <img
                         src={friend?.profileUrl ?? NoProfile}
                         alt={friend?.firstName}
@@ -440,12 +451,13 @@ const Home = () => {
                     <div className="flex gap-1">
                       {sentFriendRequests.includes(friend._id) ? (
                         <span className="text-sm text-ascent-2">
-                        Request Sent
+                          Request Sent
                         </span>
                       ) : (
                         <button
                           className="bg-[#0444a430] text-sm text-white p-1 rounded"
-                          onClick={() => handleFriendRequest(friend?._id)}>
+                          onClick={() => handleFriendRequest(friend?._id)}
+                        >
                           <BsPersonFillAdd
                             size={20}
                             className="text-[#0f52b6]"

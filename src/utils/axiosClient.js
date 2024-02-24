@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice";
 
-const API_URl = "http://localhost:8800";
+const API_URl = "http://localhost:8000";
 
 export const axiosClient = axios.create({
   baseURL: API_URl,
@@ -29,11 +29,11 @@ export const apiRequest = async ({ url, token, data, method }) => {
 export const handleFileUpload = async (uploadFile) => {
   const formData = new FormData();
   formData.append("file", uploadFile);
-  formData.append("upload_preset", "social_utopia");
+  formData.append("upload_preset", "socialUtopia");
 
   try {
     const response = await axios.post(
-      `https://api.cloudinary.com/v1_1/rajusolanki/image/upload`,
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ID}/image/upload`,
       formData
     );
     return response?.data?.secure_url;
@@ -144,4 +144,3 @@ export const viewUserProfile = async (token, id) => {
     console.log(error);
   }
 };
-

@@ -1,6 +1,7 @@
 import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Home, Login, Profile, Register, ResetPassword } from "./pages";
 import { useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 
 function RequireUser() {
   const { user } = useSelector((state) => state.user);
@@ -42,6 +43,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
       </Routes>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }
