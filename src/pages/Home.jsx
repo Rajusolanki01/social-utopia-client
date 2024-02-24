@@ -25,6 +25,7 @@ import {
   likePost,
 } from "../utils/axiosClient";
 import { UserLogin } from "../redux/userSlice";
+import toast from "react-hot-toast";
 
 const FilePreview = ({ file }) => {
   if (!file) {
@@ -63,9 +64,7 @@ const Home = () => {
   const { posts } = useSelector((state) => state.posts);
   const [friendRequest, setFriendRequest] = useState([]);
   const [suggestedFriends, setSuggestedFriends] = useState([]);
-  const [errMsg, setErrMsg] = useState("");
   const [file, setFile] = useState(null);
-  const [posting, setPosting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sentFriendRequests, setSentFriendRequests] = useState(() => {
     const storedRequests = localStorage.getItem("sentFriendRequests");
@@ -83,7 +82,6 @@ const Home = () => {
 
   const handlePostSubmit = async (data) => {
     setLoading(true);
-    setErrMsg("");
 
     try {
       const uri = file && (await handleFileUpload(file));
@@ -98,21 +96,19 @@ const Home = () => {
           Authorization: `Bearer ${user?.token}`,
         },
       });
-
-      if (response?.data?.status === "failed") {
-        setErrMsg(response?.data?.error?.message);
+      if (response?.status === 200) {
+        toast.success(response?.data?.message);
       } else {
-        reset({
-          description: "",
-        });
-        setFile(null);
-        setErrMsg("");
-        await fetchingPost();
+        toast.error(response?.data?.message);
       }
+      reset({
+        description: "",
+      });
+      setFile(null);
+      await fetchingPost();
     } catch (error) {
       const err = error.response?.data;
-      console.log(err);
-      setErrMsg(err?.message);
+      toast.error(err?.message);
       setLoading(false);
     }
   };
@@ -120,12 +116,10 @@ const Home = () => {
   const fetchingPost = async () => {
     try {
       await fetchPosts(user?.token, dispatch);
-
       setLoading(false);
     } catch (error) {
       const err = error.response?.data;
-      console.error("Detailed error:", err);
-      setErrMsg(err?.message);
+      toast.error(err?.message);
       setLoading(false);
     }
   };
@@ -139,10 +133,10 @@ const Home = () => {
     try {
       const response = await deletePost(user?.token, id);
       setLoading(true);
-      if (response?.data?.success === "failed") {
-        setErrMsg(response?.data?.message);
+      if (response?.data?.success === true) {
+        toast.success(response?.data?.message);
       } else {
-        setErrMsg(response?.data?.message);
+        toast.error(response?.data?.message);
       }
       await fetchingPost();
       setLoading(false);
@@ -162,7 +156,7 @@ const Home = () => {
       });
       setFriendRequest(response?.data?.data);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -177,7 +171,7 @@ const Home = () => {
       });
       setSuggestedFriends(response?.data?.data);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -185,10 +179,7 @@ const Home = () => {
     try {
       const response = await SendFriendRequest(user?.token, id);
       if (response?.data?.success === "failed") {
-        setErrMsg(response?.data?.message);
       } else {
-        setErrMsg(response?.data?.message);
-
         // Update sentFriendRequests state
         setSentFriendRequests((prevRequests) => [...prevRequests, id]);
 
@@ -199,7 +190,7 @@ const Home = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -216,7 +207,7 @@ const Home = () => {
       setFriendRequest(response?.data?.data);
       getUser();
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -267,18 +258,6 @@ const Home = () => {
                   error={errors.description ? errors.description.message : ""}
                 />
               </div>
-              {errMsg && (
-                <span
-                  role="alert"
-                  className={`text-sm ${
-                    errMsg?.status === "failed"
-                      ? "text-[#2ba150fe]"
-                      : "text-[#f64949fe]"
-                  } mt-0.5`}
-                >
-                  {errMsg}
-                </span>
-              )}
 
               {/* File Preview */}
               <div className="mt-4">
@@ -335,15 +314,11 @@ const Home = () => {
                 </label>
 
                 <div>
-                  {posting ? (
-                    <Loading />
-                  ) : (
-                    <CustomButton
-                      type="submit"
-                      title="Post"
-                      containerStyles="bg-custom-gradient text-white py-2 px-6 rounded-full font-semibold text-sm"
-                    />
-                  )}
+                  <CustomButton
+                    type="submit"
+                    title="Post"
+                    containerStyles="bg-custom-gradient text-white py-2 px-6 rounded-full font-semibold text-sm"
+                  />
                 </div>
               </div>
             </form>

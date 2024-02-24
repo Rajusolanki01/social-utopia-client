@@ -71,11 +71,6 @@ const TopBar = () => {
         </button>
 
         <div>
-          {/* <CustomButton
-            onClick={() => dispatch(Logout())}
-            title="Log Out"
-            containerStyles="bg-primary text-ascent-2 font-semibold text-sm text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full"
-          /> */}
           <button
             className="logout-Btn bg-custom-gradient"
             onClick={() => dispatch(Logout())}
