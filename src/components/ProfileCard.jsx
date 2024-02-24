@@ -15,7 +15,7 @@ import { NoProfile } from "../assets";
 import { UpdateProfile } from "../redux/userSlice";
 
 const ProfileCard = ({ user }) => {
-  const { user: data, edit } = useSelector((state) => state.user);
+  const { user: data } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   return (

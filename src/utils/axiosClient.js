@@ -77,14 +77,13 @@ export const likePost = async (token, uri, id) => {
 
 export const deletePost = async (token, id) => {
   try {
-    const response = await axiosClient({
+    return await axiosClient({
       url: "posts/" + id,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return;
   } catch (error) {
     console.log(error);
   }
@@ -115,7 +114,7 @@ export const getUserInfo = async (token, id) => {
 
 export const SendFriendRequest = async (token, id) => {
   try {
-    const response = await axiosClient({
+    return await axiosClient({
       url: "users/friend-request",
       method: "POST",
       data: { requestTo: id },
@@ -123,7 +122,6 @@ export const SendFriendRequest = async (token, id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return;
   } catch (error) {
     console.log(error);
   }
@@ -131,7 +129,7 @@ export const SendFriendRequest = async (token, id) => {
 
 export const viewUserProfile = async (token, id) => {
   try {
-    const response = await axiosClient({
+    return await axiosClient({
       url: "users/profile-view",
       method: "POST",
       data: { id },
@@ -139,7 +137,6 @@ export const viewUserProfile = async (token, id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return;
   } catch (error) {
     console.log(error);
   }
