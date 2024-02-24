@@ -16,7 +16,7 @@ const TopBar = () => {
   const {
     register,
     handleSubmit,
-    formState: {},
+    formState: { error },
   } = useForm();
 
   const handleTheme = () => {
@@ -89,6 +89,7 @@ const TopBar = () => {
           </button>
         </div>
       </div>
+      {error && <span className="error-message">{error.message}</span>}
     </div>
   );
 };
