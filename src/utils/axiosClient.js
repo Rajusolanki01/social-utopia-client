@@ -48,7 +48,7 @@ export const handleFileUpload = async (uploadFile) => {
 export const fetchPosts = async (token, dispatch, uri, data) => {
   try {
     const response = await axiosClient({
-      url: uri || "/posts",
+      url: uri || "posts",
       method: "POST",
       data: data || {},
       headers: {
@@ -93,7 +93,7 @@ export const deletePost = async (token, id) => {
 
 export const getUserInfo = async (token, id) => {
   try {
-    const uri = id === undefined ? "/users/get-user" : "/users/get-user/" + id;
+    const uri = id === undefined ? "users/get-user" : "/users/get-user/" + id;
 
     const response = await axiosClient({
       url: uri,
@@ -106,7 +106,7 @@ export const getUserInfo = async (token, id) => {
     if (response?.data?.message === "Authentication failed") {
       localStorage.removeItem("user");
       window.alert("User Session expired. Login Again.");
-      window.location.replace("/#/login");
+      window.location.replace("#/login");
     }
     return response?.data?.user;
   } catch (error) {
