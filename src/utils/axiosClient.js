@@ -3,7 +3,7 @@ import { SetPosts } from "../redux/postSlice";
 
 // const API_URl = "http://localhost:8000";
 
-const API_URl = process.env.REACT_APP_PRODUCTION_SERVER_URL;
+const API_URl = "https://social-utopia-server-h3sdn.ondigitalocean.app/";
 
 export const axiosClient = axios.create({
   baseURL: API_URl,
