@@ -1,9 +1,8 @@
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice";
 
-
-
-let baseURL = "http://localhost:8000";
+let baseURL = process.env.REACT_APP_PRODUCTION_SERVER_URL;
+// "https://localhost:8000/";
 if (process.env.NODE_ENV === "production") {
   baseURL = process.env.REACT_APP_PRODUCTION_SERVER_URL;
 }
