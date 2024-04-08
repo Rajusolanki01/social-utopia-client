@@ -1,12 +1,15 @@
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice";
 
-// const API_URl = "http://localhost:8000";
 
-const API_URl = "https://social-utopia-server-h3sdn.ondigitalocean.app/";
+
+let baseURL = "http://localhost:8000";
+if (process.env.NODE_ENV === "production") {
+  baseURL = process.env.REACT_APP_PRODUCTION_SERVER_URL;
+}
 
 export const axiosClient = axios.create({
-  baseURL: API_URl,
+  baseURL: baseURL,
   responseType: "json",
 });
 
